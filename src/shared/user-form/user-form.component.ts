@@ -1,13 +1,11 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +18,7 @@ export class UserFormComponent {
   employmentStatuses:Array<String> = ['Full-time', 'Part-time', 'Unemployed'];
   paymentHistories:Array<String> = ['On Time', 'Late <30', 'Late 30-60', 'Late >60'];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}  // ✅ Ensure FormBuilder is injected
 
   ngOnInit():void{
     this.localForm=this.fb.group({

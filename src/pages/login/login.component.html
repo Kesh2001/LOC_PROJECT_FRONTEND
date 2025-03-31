@@ -1,0 +1,31 @@
+<div class="card flex flex-col justify-center items-center min-h-screen">
+
+    <div class="flex justify-center">
+        <img src="../../assets/banner.jpg" alt="Login Image" class="mb-4 center w-full object-cover" />
+    </div>
+
+    <p-toast></p-toast>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 w-1/3 p-6 bg-green-600 shadow-md rounded-lg" >
+      <h2 class="text-2xl text-white  font-normal text-center">Login</h2>
+      
+      <div class="field">
+        <label for="email" class="block mb-1" class="text-lg text-white  font-normal text-center">Email</label>
+        <input pInputText id="email" formControlName="email" placeholder="Enter your email" class="w-full" />
+        <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')" class="p-error">Email is required.</small>
+        <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')" class="p-error">Invalid email format.</small>
+      </div>
+  
+      <div class="field">
+        <label for="email" class="block mb-1" class="text-lg text-white  font-normal text-center">Password</label>
+        <p-password id="password" formControlName="password" placeholder="Enter your password" [toggleMask]="true" class="w-full" />
+        <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')" class="p-error">Password is required.</small>
+      </div>
+  
+      <p-button type="submit" label="Login" icon="pi pi-sign-in" [disabled]="loginForm.invalid" class="w-full text-center text-white " />
+  
+      <div class="text-center">
+        <span class=" text-white  font-normal text-center">Don't have an account? </span>
+        <a routerLink="/signup" class="text-white hover:underline ">Sign Up</a>
+      </div>
+    </form>
+  </div>

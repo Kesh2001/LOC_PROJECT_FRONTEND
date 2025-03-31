@@ -1,0 +1,25 @@
+
+:host ::ng-deep {
+    .p-progressbar {
+        height: .5rem;
+        background-color: #D8DADC;
+
+        .p-progressbar-value {
+            background-color: #607D8B;
+        }
+    }
+}
+
+.card {
+    padding: 1rem;
+  }
+  
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .ml-auto {
+    margin-left: auto;
+  }

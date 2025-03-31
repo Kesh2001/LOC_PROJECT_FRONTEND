@@ -1,0 +1,109 @@
+<div class="card">
+  <h2>Update Application: {{ applicantId }}</h2>
+  <form [formGroup]="updateForm" (ngSubmit)="onUpdate()" class="grid-form">
+    <div class="form-section">
+      <h3>Personal Information</h3>
+      <div class="p-field">
+        <label for="applicantId">Applicant ID</label>
+        <input pInputText id="applicantId" formControlName="applicantId" />
+      </div>
+      <div class="p-field">
+        <label for="age">Age</label>
+        <p-inputNumber id="age" formControlName="age" [min]="19" [max]="100" />
+      </div>
+      <div class="p-field">
+        <label for="province">Province</label>
+        <p-dropdown id="province" [options]="provincesList" formControlName="province" placeholder="Select Province"></p-dropdown>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Employment Details</h3>
+      <div class="p-field">
+        <label for="employmentStatus">Employment Status</label>
+        <p-dropdown id="employmentStatus" [options]="employmentStatusList" formControlName="employmentStatus" placeholder="Select Employment Status"></p-dropdown>
+      </div>
+      <div class="p-field">
+        <label for="monthsEmployed">Months Employed</label>
+        <p-inputNumber id="monthsEmployed" formControlName="monthsEmployed" [min]="0" [max]="600" />
+      </div>
+      <div class="p-field">
+        <label for="annualIncome">Annual Income</label>
+        <p-inputNumber id="annualIncome" formControlName="annualIncome" mode="decimal" [min]="20000" [max]="200000" />
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Financial Information</h3>
+      <div class="p-field">
+        <label for="selfReportedExpenses">Self Reported Expenses</label>
+        <p-inputNumber id="selfReportedExpenses" formControlName="selfReportedExpenses" mode="decimal" [min]="0" [max]="10000" />
+      </div>
+      <div class="p-field">
+        <label for="selfReportedDebt">Self Reported Debt</label>
+        <p-inputNumber id="selfReportedDebt" formControlName="selfReportedDebt" mode="decimal" [min]="0" [max]="10000" />
+      </div>
+      <div class="p-field">
+        <label for="monthlyExpenses">Monthly Expenses</label>
+        <p-inputNumber id="monthlyExpenses" formControlName="monthlyExpenses" mode="decimal" [min]="0" [max]="10000" />
+      </div>
+      <div class="p-field">
+        <label for="estimatedDebt">Estimated Debt</label>
+        <p-inputNumber id="estimatedDebt" formControlName="estimatedDebt" mode="decimal" [min]="0" [max]="10000" />
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Credit Details</h3>
+      <div class="p-field">
+        <label for="creditScore">Credit Score</label>
+        <p-inputNumber id="creditScore" formControlName="creditScore" [min]="300" [max]="900" />
+      </div>
+      <div class="p-field">
+        <label for="creditUtilization">Credit Utilization (%)</label>
+        <p-inputNumber id="creditUtilization" formControlName="creditUtilization" [min]="0" [max]="100" />
+      </div>
+      <div class="p-field">
+        <label for="numOpenAccounts">Number of Open Accounts</label>
+        <p-inputNumber id="numOpenAccounts" formControlName="numOpenAccounts" [min]="0" [max]="20" />
+      </div>
+      <div class="p-field">
+        <label for="numCreditInquiries">Number of Credit Inquiries</label>
+        <p-inputNumber id="numCreditInquiries" formControlName="numCreditInquiries" [min]="0" [max]="10" />
+      </div>
+      <div class="p-field">
+        <label for="paymentHistory">Payment History</label>
+        <p-dropdown id="paymentHistory" [options]="paymentHistoryList" formControlName="paymentHistory" placeholder="Select Payment History"></p-dropdown>
+      </div>
+      <div class="p-field">
+        <label for="currentCreditLimit">Current Credit Limit</label>
+        <p-inputNumber id="currentCreditLimit" formControlName="currentCreditLimit" mode="decimal" [min]="0" [max]="50000" />
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Loan Details</h3>
+      <div class="p-field">
+        <label for="requestedAmount">Requested Amount</label>
+        <p-inputNumber id="requestedAmount" formControlName="requestedAmount" mode="decimal" [min]="1000" [max]="50000" />
+      </div>
+      <div class="p-field">
+        <label for="approved">Approved (0 = No, 1 = Yes)</label>
+        <p-inputNumber id="approved" formControlName="approved" [min]="0" [max]="1" />
+      </div>
+      <div class="p-field">
+        <label for="approvedAmount">Approved Amount</label>
+        <p-inputNumber id="approvedAmount" formControlName="approvedAmount" mode="decimal" [min]="0" [max]="50000" />
+      </div>
+      <div class="p-field">
+        <label for="interestRate">Interest Rate (%)</label>
+        <p-inputNumber id="interestRate" formControlName="interestRate" mode="decimal" [min]="3.0" [max]="15.0" [step]="0.1" />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <p-button type="submit" label="Update Application" icon="pi pi-check" [disabled]="updateForm.invalid"></p-button>
+    </div>
+  </form>
+  <p-toast></p-toast>
+</div>

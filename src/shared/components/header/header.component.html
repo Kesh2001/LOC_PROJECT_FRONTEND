@@ -1,0 +1,17 @@
+<div class="card mx-10">
+    <div class="card">
+      <p-menubar [model]="items">
+        <ng-template #end>
+          <div class="flex items-center gap-2">
+            <p-avatar
+              icon="pi pi-user"
+              shape="circle"
+              class="cursor-pointer"
+              (click)="avatarMenu.toggle($event)"
+            />
+            <p-menu #avatarMenu [model]="avatarMenuItems" [popup]="true" [appendTo]="'body'"></p-menu>
+          </div>
+        </ng-template>
+      </p-menubar>
+    </div>
+  </div>

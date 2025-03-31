@@ -1,0 +1,9 @@
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-password {
+  width: 100%;
+}
+
+.p-error {
+  color: #f44336;
+  font-size: 0.875rem;
+}

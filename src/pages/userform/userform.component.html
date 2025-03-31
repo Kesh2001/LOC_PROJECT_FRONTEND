@@ -1,0 +1,245 @@
+    <!-- src/app/user-form.component.html -->
+<div class="card flex justify-center">
+    <p-toast></p-toast>
+    <p-stepper [(value)]="activeStep" class="w-1/3 my-15">
+        <p-step-list>
+            <p-step [value]="1" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-user"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+
+            <p-step [value]="2" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-star"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+
+            <p-step [value]="3" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-id-card"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+
+            <p-step [value]="4" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-check"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+        </p-step-list>
+
+        <p-step-panels>
+            <!-- Step 1: Basic Info -->
+            <p-step-panel [value]="1">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <form [formGroup]="localForm" class="flex flex-col gap-2 mx-auto h-1/3 w-3/4" >
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Basic Information</div>
+                        <div class="field m-3 ">
+                            <label for="applicantId">Applicant ID</label>
+                            <input pInputText id="applicantId" formControlName="applicantId" placeholder="Unique ID" class="w-full" />
+                            <small *ngIf="localForm.get('applicantId')?.touched && localForm.get('applicantId')?.hasError('required')" class="p-error">Required</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="age">Age</label>
+                            <p-inputNumber id="age" formControlName="age" [min]="19" [max]="100" class="w-full" />
+                            <small *ngIf="localForm.get('age')?.touched && localForm.get('age')?.hasError('required')" class="p-error">Required</small>
+                            <small *ngIf="localForm.get('age')?.touched && (localForm.get('age')?.hasError('min') || localForm.get('age')?.hasError('max'))" class="p-error">19-100</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="province">Province</label>
+                            <p-dropdown id="province" formControlName="province" [options]="provinces" placeholder="Select Province" class="w-full" />
+                            <small *ngIf="localForm.get('province')?.touched && localForm.get('province')?.hasError('required')" class="p-error">Required</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="employmentStatus">Employment Status</label>
+                            <p-dropdown id="employmentStatus" formControlName="employmentStatus" [options]="employmentStatuses" placeholder="Select Status" class="w-full" />
+                            <small *ngIf="localForm.get('employmentStatus')?.touched && localForm.get('employmentStatus')?.hasError('required')" class="p-error">Required</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="monthsEmployed">Months Employed</label>
+                            <p-inputNumber id="monthsEmployed" formControlName="monthsEmployed" [min]="0" [max]="600" class="w-full" />
+                            <small *ngIf="localForm.get('monthsEmployed')?.touched && localForm.get('monthsEmployed')?.hasError('max')" class="p-error">Max 600</small>
+                        </div>
+                    </form>
+                    <div class="flex pt-6 justify-end">
+                        <p-button (onClick)="activateCallback(2)" label="Next" icon="pi pi-arrow-right" iconPos="right" [disabled]="localForm.get('applicantId')?.invalid || localForm.get('age')?.invalid || localForm.get('province')?.invalid || localForm.get('employmentStatus')?.invalid || localForm.get('monthsEmployed')?.invalid" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <!-- Step 2: Income and Debt -->
+            <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <form [formGroup]="localForm" class="flex flex-col gap-2 mx-auto h-1/3 w-3/4 ">
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Income and Debt</div>
+                        <div class="field m-3">
+                            <label for="annualIncome">Annual Income (CAD)</label>
+                            <p-inputNumber id="annualIncome" formControlName="annualIncome" mode="currency" currency="CAD" [min]="20000" [max]="200000" class="w-full" />
+                            <small *ngIf="localForm.get('annualIncome')?.touched && localForm.get('annualIncome')?.hasError('required')" class="p-error">Required</small>
+                            <small *ngIf="localForm.get('annualIncome')?.touched && (localForm.get('annualIncome')?.hasError('min') || localForm.get('annualIncome')?.hasError('max'))" class="p-error">20,000-200,000</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="selfReportedExpenses">Self-Reported Expenses (CAD)</label>
+                            <p-inputNumber id="selfReportedExpenses" formControlName="selfReportedExpenses" mode="currency" currency="CAD" [min]="0" [max]="10000" class="w-full" />
+                            <small *ngIf="localForm.get('selfReportedExpenses')?.touched && localForm.get('selfReportedExpenses')?.hasError('max')" class="p-error">Max 10,000</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="selfReportedDebt">Self-Reported Debt (CAD)</label>
+                            <p-inputNumber id="selfReportedDebt" formControlName="selfReportedDebt" mode="currency" currency="CAD" [min]="0" [max]="10000" class="w-full" />
+                            <small *ngIf="localForm.get('selfReportedDebt')?.touched && localForm.get('selfReportedDebt')?.hasError('max')" class="p-error">Max 10,000</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="monthlyExpenses">Monthly Expenses (CAD)</label>
+                            <p-inputNumber id="monthlyExpenses" formControlName="monthlyExpenses" mode="currency" currency="CAD" [min]="0" [max]="10000" class="w-full" />
+                            <small *ngIf="localForm.get('monthlyExpenses')?.touched && localForm.get('monthlyExpenses')?.hasError('max')" class="p-error">Max 10,000</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="estimatedDebt">Estimated Debt (CAD)</label>
+                            <p-inputNumber id="estimatedDebt" formControlName="estimatedDebt" mode="currency" currency="CAD" [min]="0" [max]="10000" class="w-full" />
+                            <small *ngIf="localForm.get('estimatedDebt')?.touched && localForm.get('estimatedDebt')?.hasError('max')" class="p-error">Max 10,000</small>
+                        </div>
+                    </form>
+                    <div class="flex pt-6 justify-between">
+                        <p-button (onClick)="activateCallback(1)" label="Back" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(3)" label="Next" icon="pi pi-arrow-right" iconPos="right" [disabled]="localForm.get('annualIncome')?.invalid" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <!-- Step 3: Credit Details -->
+            <p-step-panel [value]="3">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <form [formGroup]="localForm" class="flex flex-col gap-2 mx-auto h-1/3 w-3/4">
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Credit Information</div>
+                        <div class="field m-3">
+                            <label for="creditScore">Credit Score</label>
+                            <p-inputNumber id="creditScore" formControlName="creditScore" [min]="300" [max]="900" class="w-full" />
+                            <small *ngIf="localForm.get('creditScore')?.touched && localForm.get('creditScore')?.hasError('required')" class="p-error">Required</small>
+                            <small *ngIf="localForm.get('creditScore')?.touched && (localForm.get('creditScore')?.hasError('min') || localForm.get('creditScore')?.hasError('max'))" class="p-error">300-900</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="creditUtilization">Credit Utilization (%)</label>
+                            <p-inputNumber id="creditUtilization" formControlName="creditUtilization" mode="decimal" [min]="0" [max]="100" suffix="%" class="w-full" />
+                            <small *ngIf="localForm.get('creditUtilization')?.touched && localForm.get('creditUtilization')?.hasError('max')" class="p-error">Max 100%</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="numOpenAccounts">Number of Open Accounts</label>
+                            <p-inputNumber id="numOpenAccounts" formControlName="numOpenAccounts" [min]="0" [max]="20" class="w-full" />
+                            <small *ngIf="localForm.get('numOpenAccounts')?.touched && localForm.get('numOpenAccounts')?.hasError('max')" class="p-error">Max 20</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="numCreditInquiries">Number of Credit Inquiries</label>
+                            <p-inputNumber id="numCreditInquiries" formControlName="numCreditInquiries" [min]="0" [max]="10" class="w-full" />
+                            <small *ngIf="localForm.get('numCreditInquiries')?.touched && localForm.get('numCreditInquiries')?.hasError('max')" class="p-error">Max 10</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="currentCreditLimit">Current Credit Limit (CAD)</label>
+                            <p-inputNumber id="currentCreditLimit" formControlName="currentCreditLimit" mode="currency" currency="CAD" [min]="0" [max]="50000" class="w-full" />
+                            <small *ngIf="localForm.get('currentCreditLimit')?.touched && localForm.get('currentCreditLimit')?.hasError('max')" class="p-error">Max 50,000</small>
+                        </div>
+                    </form>
+                    <div class="flex pt-6 justify-between">
+                        <p-button (onClick)="activateCallback(2)" label="Back" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(4)" label="Next" icon="pi pi-arrow-right" iconPos="right" [disabled]="localForm.get('creditScore')?.invalid" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <!-- Step 4: Approval and Additional -->
+            <p-step-panel [value]="4">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <form [formGroup]="localForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-2 mx-auto h-1/3 w-3/4" >
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Approval Details</div>
+                        <div class="field m-3">
+                            <label for="requestedAmount">Requested Amount (CAD)</label>
+                            <p-inputNumber id="requestedAmount" formControlName="requestedAmount" mode="currency" currency="CAD" [min]="1000" [max]="50000" class="w-full" />
+                            <small *ngIf="localForm.get('requestedAmount')?.touched && localForm.get('requestedAmount')?.hasError('required')" class="p-error">Required</small>
+                            <small *ngIf="localForm.get('requestedAmount')?.touched && (localForm.get('requestedAmount')?.hasError('min') || localForm.get('requestedAmount')?.hasError('max'))" class="p-error">1,000-50,000</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="paymentHistory">Payment History</label>
+                            <p-dropdown id="paymentHistory" formControlName="paymentHistory" [options]="paymentHistories" placeholder="Select Payment History" class="w-full" />
+                            <small *ngIf="localForm.get('paymentHistory')?.touched && localForm.get('paymentHistory')?.hasError('required')" class="p-error">Required</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="approved">Approved (0=No, 1=Yes)</label>
+                            <p-inputNumber id="approved" formControlName="approved" [min]="0" [max]="1" class="w-full" />
+                            <small *ngIf="localForm.get('approved')?.touched && localForm.get('approved')?.hasError('required')" class="p-error">Required</small>
+                            <small *ngIf="localForm.get('approved')?.touched && (localForm.get('approved')?.hasError('min') || localForm.get('approved')?.hasError('max'))" class="p-error">0 or 1</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="approvedAmount">Approved Amount (CAD)</label>
+                            <p-inputNumber id="approvedAmount" formControlName="approvedAmount" mode="currency" currency="CAD" [min]="0" [max]="50000" class="w-full" />
+                            <small *ngIf="localForm.get('approvedAmount')?.touched && localForm.get('approvedAmount')?.hasError('max')" class="p-error">Max 50,000</small>
+                        </div>
+                        <div class="field m-3">
+                            <label for="interestRate">Interest Rate (%)</label>
+                            <p-inputNumber id="interestRate" formControlName="interestRate" mode="decimal" [min]="3.0" [max]="15.0" suffix="%" class="w-full" />
+                            <small *ngIf="localForm.get('interestRate')?.touched && (localForm.get('interestRate')?.hasError('min') || localForm.get('interestRate')?.hasError('max'))" class="p-error">3.0-15.0%</small>
+                        </div>
+                    </form>
+                    <div class="flex pt-6 justify-between">
+                        <p-button (onClick)="activateCallback(3)" label="Back" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="onSubmit()" label="Submit" icon="pi pi-check" iconPos="right" [disabled]="localForm.get('requestedAmount')?.invalid || localForm.get('paymentHistory')?.invalid || localForm.get('approved')?.invalid" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <!-- Step 5: Success (Optional) -->
+            <p-step-panel [value]="5">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 16rem; max-width: 24rem">
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Application Submitted Successfully</div>
+                        <div class="text-center">
+                            <img alt="logo" src="https://primefaces.org/cdn/primeng/images/stepper/content.svg" />
+                        </div>
+                    </div>
+                    <div class="flex pt-6 justify-start">
+                        <p-button (onClick)="activateCallback(4)" label="Back" severity="secondary" icon="pi pi-arrow-left" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+        </p-step-panels>
+    </p-stepper>
+</div>
+

@@ -201,22 +201,22 @@
                             <p-dropdown id="paymentHistory" formControlName="paymentHistory" [options]="paymentHistories" placeholder="Select Payment History" class="w-full" />
                             <small *ngIf="localForm.get('paymentHistory')?.touched && localForm.get('paymentHistory')?.hasError('required')" class="p-error">Required</small>
                         </div>
-                        <div class="field m-3">
+                        <!-- <div class="field m-3">
                             <label for="approved">Approved (0=No, 1=Yes)</label>
                             <p-inputNumber id="approved" formControlName="approved" [min]="0" [max]="1" class="w-full" />
                             <small *ngIf="localForm.get('approved')?.touched && localForm.get('approved')?.hasError('required')" class="p-error">Required</small>
                             <small *ngIf="localForm.get('approved')?.touched && (localForm.get('approved')?.hasError('min') || localForm.get('approved')?.hasError('max'))" class="p-error">0 or 1</small>
-                        </div>
-                        <div class="field m-3">
+                        </div> -->
+                        <!-- <div class="field m-3">
                             <label for="approvedAmount">Approved Amount (CAD)</label>
                             <p-inputNumber id="approvedAmount" formControlName="approvedAmount" mode="currency" currency="CAD" [min]="0" [max]="50000" class="w-full" />
                             <small *ngIf="localForm.get('approvedAmount')?.touched && localForm.get('approvedAmount')?.hasError('max')" class="p-error">Max 50,000</small>
-                        </div>
-                        <div class="field m-3">
+                        </div> -->
+                        <!-- <div class="field m-3">
                             <label for="interestRate">Interest Rate (%)</label>
                             <p-inputNumber id="interestRate" formControlName="interestRate" mode="decimal" [min]="3.0" [max]="15.0" suffix="%" class="w-full" />
                             <small *ngIf="localForm.get('interestRate')?.touched && (localForm.get('interestRate')?.hasError('min') || localForm.get('interestRate')?.hasError('max'))" class="p-error">3.0-15.0%</small>
-                        </div>
+                        </div> -->
                     </form>
                     <div class="flex pt-6 justify-between">
                         <p-button (onClick)="activateCallback(3)" label="Back" severity="secondary" icon="pi pi-arrow-left" />

@@ -113,10 +113,10 @@ export class UserformComponent {
       paymentHistory: ['', Validators.required],
       currentCreditLimit: ['', [Validators.min(0), Validators.max(50000)]],
       monthlyExpenses: ['', [Validators.min(0), Validators.max(10000)]],
-      approved: [0, Validators.required], // Default to 0 (No)
-      approvedAmount: ['', [Validators.min(0), Validators.max(50000)]],
+      // approved: [0, Validators.required], // Default to 0 (No)
+      // approvedAmount: ['', [Validators.min(0), Validators.max(50000)]],
       estimatedDebt: ['', [Validators.min(0), Validators.max(10000)]],
-      interestRate: ['', [Validators.min(3.0), Validators.max(15.0)]]
+      // interestRate: ['', [Validators.min(3.0), Validators.max(15.0)]]
     });
   }
 

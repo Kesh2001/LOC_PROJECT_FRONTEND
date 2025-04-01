@@ -21,10 +21,10 @@ export interface Application {
   province: string;
   employmentStatus: string;
   annualIncome: number;
-  date?: string;
-  status?: string;
-  activity?: number;
-  verified?: boolean;
+  // date?: string;
+  // status?: string;
+  // activity?: number;
+  // verified?: boolean;
   estimatedDebt?: number;
   creditScore?:number;
   currentCreditLimit?:number;

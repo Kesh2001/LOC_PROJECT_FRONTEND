@@ -49,10 +49,10 @@
   <th style="min-width:15rem">Applicant ID</th>
   <th style="min-width:15rem">Province</th>
   <th style="min-width:15rem">Employment Status</th>
-  <th style="min-width:10rem">Date</th>
+  <!-- <th style="min-width:10rem">Date</th> -->
   <th style="min-width:10rem">Annual Income</th>
-  <th style="min-width:10rem">Status</th>
-  <th style="min-width:10rem">Activity</th>
+  <!-- <th style="min-width:10rem">Status</th>
+  <th style="min-width:10rem">Activity</th> -->
   <th style="width: 3rem">Application Status</th>
   <th style="width: 8rem">Estimated Debt</th>
   <th style="width: 8rem">Credit Score</th>
@@ -68,14 +68,14 @@
   <td>{{ application.applicantId }}</td>
   <td>{{ application.province }}</td>
   <td>{{ application.employmentStatus }}</td>
-  <td>{{ application.date ? (application.date | date: 'MM/dd/yyyy') : '' }}</td>
+  <!-- <td>{{ application.date ? (application.date | date: 'MM/dd/yyyy') : '' }}</td> -->
   <td>{{ application.annualIncome | currency:'CAD':'symbol' }}</td>
   <td>
-  <p-tag [value]="application.status || ''" [severity]="getSeverity(application.status)"></p-tag>
+  <!-- <p-tag [value]="application.status || ''" [severity]="getSeverity(application.status)"></p-tag>
   </td>
   <td>
   <p-progressbar [value]="application.activity || 0" [showValue]="false"></p-progressbar>
-  </td>
+  </td> -->
   <td class="text-center">
   <i
               class="pi"

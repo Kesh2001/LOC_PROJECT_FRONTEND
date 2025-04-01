@@ -16,7 +16,7 @@ import { SelectModule } from 'primeng/select';
 import { Observable, throwError, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-interface Application {
+export interface Application {
   applicantId: string;
   province: string;
   employmentStatus: string;
@@ -29,6 +29,7 @@ interface Application {
   creditScore?:number;
   currentCreditLimit?:number;
   approved?:boolean;
+  approvedAmount:number;
   interestRate?:number;
 }
 
@@ -120,6 +121,7 @@ export class DatatableComponent implements OnInit, OnDestroy {
     this.getApplications(page, rows, this.searchValue, this.employmentStatusFilter, this.provinceFilter).subscribe({
       next: (response: any) => {
         console.log('Fetched Applications:', response.data);
+        console.log('First application approvedAmount:', response.data[0]?.approvedAmount);
         this.applications = response.data;
         this.totalRecords = response.totalElements;
         this.loading = false;

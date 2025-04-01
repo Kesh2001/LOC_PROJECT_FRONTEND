@@ -1,44 +1,48 @@
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, startWith } from 'rxjs/operators';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
+// All your PrimeNG imports
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormControl,
+} from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
 import { InputTextModule } from 'primeng/inputtext';
-import { IconField, IconFieldModule } from 'primeng/iconfield';
-import { InputIcon, InputIconModule } from 'primeng/inputicon';
-import { CommonModule } from '@angular/common';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { PasswordModule } from 'primeng/password';
-import { ToggleButton, ToggleButtonModule } from 'primeng/togglebutton';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToggleButton } from 'primeng/togglebutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { InputOtpModule } from 'primeng/inputotp';
 import { StepperModule } from 'primeng/stepper';
 import { ToastModule } from 'primeng/toast';
-import { HttpClient } from '@angular/common/http';
-
-
+ 
 interface City {
   name: string;
   code: string;
 }
-
+ 
 @Component({
   selector: 'app-userform',
-  standalone:true,
+  standalone: true,
   imports: [
-    CommonModule, // Added for *ngIf
-    InputOtpModule,
-    InputTextModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    InputOtpModule,
+    InputTextModule,
     DropdownModule,
     ButtonModule,
     InputNumberModule,
@@ -53,37 +57,24 @@ interface City {
     InputIconModule,
     PasswordModule,
     ToastModule,
-    
-
   ],
   templateUrl: './userform.component.html',
-  styleUrl: './userform.component.css',
-  providers: [MessageService]
-
+  styleUrls: ['./userform.component.css'],
+  providers: [MessageService],
 })
-
-
-
-
 export class UserformComponent {
-  private apiUrl = 'http://localhost:8080/api/applications'; // Backend endpoint
-
-  localForm: FormGroup = new FormGroup([]);
-
+  // 1) Point directly to your Python service endpoint:
+  private pythonApiUrl = 'http://localhost:5050/predict';
+ 
+  localForm: FormGroup;
+ 
+  // Sample data for dropdowns, etc.
   provinces: Array<string> = ['ON', 'BC', 'QC', 'AB', 'MB', 'SK', 'NS', 'NB', 'NL', 'PEI'];
   employmentStatuses: Array<string> = ['Full-time', 'Part-time', 'Unemployed'];
   paymentHistories: Array<string> = ['On Time', 'Late <30', 'Late 30-60', 'Late >60'];
-
+ 
   items: MenuItem[] | undefined;
-  value1: string | undefined;
-  value2: string | undefined;
-  value3: string | undefined;
-  text1: string | undefined;
-  text2: string | undefined;
-  number: string | undefined;
-  value: any;
   selectedCity: City | undefined;
-
   cities: City[] = [
     { name: 'New York', code: 'NY' },
     { name: 'Rome', code: 'RM' },
@@ -91,11 +82,16 @@ export class UserformComponent {
     { name: 'Istanbul', code: 'IST' },
     { name: 'Paris', code: 'PRS' },
   ];
-
-  constructor(private fb: FormBuilder,  private messageService: MessageService, private http: HttpClient) { 
-    
-    
-
+ 
+  // Stepper example usage
+  activeStep: number = 1;
+ 
+  constructor(
+    private fb: FormBuilder,
+    private messageService: MessageService,
+    private http: HttpClient
+  ) {
+    // 2) Form fields with validations
     this.localForm = this.fb.group({
       applicantId: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]{6}$')]],
       selfReportedExpenses: ['', [Validators.required, Validators.min(0), Validators.max(10000), Validators.pattern('^\\d*(\\.\\d+)?$')]],
@@ -113,125 +109,122 @@ export class UserformComponent {
       paymentHistory: ['', Validators.required],
       currentCreditLimit: ['', [Validators.min(0), Validators.max(50000)]],
       monthlyExpenses: ['', [Validators.min(0), Validators.max(10000)]],
-      // approved: [0, Validators.required], // Default to 0 (No)
-      // approvedAmount: ['', [Validators.min(0), Validators.max(50000)]],
       estimatedDebt: ['', [Validators.min(0), Validators.max(10000)]],
-      // interestRate: ['', [Validators.min(3.0), Validators.max(15.0)]]
+      // If you want to store DTI, add it here:
+      // dti: ['', [Validators.min(0), Validators.max(100)]],
     });
   }
-
-
-  submitApplication(applicationData: any): Observable<any> {
-    return this.http.post(this.apiUrl, applicationData).pipe(
-      catchError(error => {
+ 
+  ngOnInit(): void {
+    // Example menu items for your UI
+    this.items = [
+      { label: 'Web Search' },
+      { label: 'AI Assistant' },
+      { label: 'History' },
+    ];
+  }
+ 
+  // 3) This method calls the Python endpoint
+  submitPrediction(pythonData: any): Observable<any> {
+    // Post to the Flask /predict route
+    return this.http.post(this.pythonApiUrl, pythonData).pipe(
+      catchError((error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Failed to submit application',
-          life: 3000
+          detail: 'Failed to call Python /predict',
+          life: 3000,
         });
         return throwError(() => error);
       })
     );
   }
-
-  ngOnInit(): void {
-
-    this.items = [{ label: 'Web Search' }, { label: 'AI Assistant' }, { label: 'History' }];
-
-   
+ 
+  // 4) Convert form fields to the JSON keys your app.py expects
+  buildPythonRequest() {
+    const formData = this.localForm.value;
+    return {
+      applicant_id: formData.applicantId,
+      self_reported_expenses: formData.selfReportedExpenses,
+      credit_score: formData.creditScore,
+      annual_income: formData.annualIncome,
+      self_reported_debt: formData.selfReportedDebt,
+      requested_amount: formData.requestedAmount,
+      age: formData.age,
+      province: formData.province,
+      employment_status: formData.employmentStatus,
+      months_employed: formData.monthsEmployed,
+      credit_utilization: formData.creditUtilization,
+      num_open_accounts: formData.numOpenAccounts,
+      num_credit_inquiries: formData.numCreditInquiries,
+      payment_history: formData.paymentHistory,
+      current_credit_limit: formData.currentCreditLimit,
+      monthly_expenses: formData.monthlyExpenses,
+      estimated_debt: formData.estimatedDebt,
+      // dti: formData.dti || 0, // if you have it
+    };
   }
-
-  submitForm(): void {
-    if (this.localForm.valid) {
-      console.log('Form Submitted', this.localForm.value);
-    } else {
-      console.log('Form is invalid');
-    }
-  }
-
+ 
+  // 5) Submit the form and call the Python service
   onSubmit() {
     if (this.localForm.valid) {
-      const formData = this.localForm.value;
-      
-      this.submitApplication(formData).subscribe({
-        next: (response: any) => { // Using 'any' for now since response isn't defined
-          console.log('Form Submitted Successfully:', response);
-          this.activeStep = 5;
+      // Build the JSON data in the shape your Flask code expects
+      const pythonPayload = this.buildPythonRequest();
+ 
+      // Actually send it to Python
+      this.submitPrediction(pythonPayload).subscribe({
+        next: (result) => {
+          console.log('Prediction result from Python:', result);
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Application submitted successfully!',
-            life: 3000
+            detail: 'Prediction & data submitted to Python!',
+            life: 3000,
           });
           this.localForm.reset();
+          this.activeStep = 5; // Example step
         },
-        error: (error) => {
-          console.error('Submission Error:', error);
+        error: (err) => {
+          console.error('Error from Python service:', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Failed to submit application: ' + (error.message || 'Unknown error'),
-            life: 3000
+            detail: 'Error calling Python /predict: ' + (err.message || 'Unknown'),
+            life: 3000,
           });
-        }
+        },
       });
     } else {
-      console.log('Form Invalid:', this.localForm.errors);
+      console.log('Form invalid:', this.localForm.errors);
       this.localForm.markAllAsTouched();
       this.messageService.add({
         severity: 'warn',
         summary: 'Warning',
         detail: 'Please fill all required fields correctly',
-        life: 3000
+        life: 3000,
       });
     }
   }
-  clickEvent(){
+ 
+  // Optional method if you want a test button or Toast
+  clickEvent() {
     this.messageService.add({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Application submitted successfully!',
-      life: 3000 // Message duration in milliseconds (3 seconds)
+      summary: 'Click Event',
+      detail: 'Test button clicked!',
+      life: 3000,
     });
   }
-
+ 
+  // Helper getters for your dropdowns
   get provincesList() {
-    return this.provinces.map(p => ({ label: p, value: p }));
+    return this.provinces.map((p) => ({ label: p, value: p }));
   }
-
+ 
   get employmentStatusList() {
-    return this.employmentStatuses.map(status => ({ label: status, value: status }));
+    return this.employmentStatuses.map((status) => ({
+      label: status,
+      value: status,
+    }));
   }
-
-  // stepper
-  activeStep: number = 1;
-
-  name: string | undefined | null = null;
-
-  email: string | undefined | null = null;
-
-  password: string | undefined | null = null;
-
-  option1: boolean | undefined = false;
-
-  option2: boolean | undefined = false;
-
-  option3: boolean | undefined = false;
-
-  option4: boolean | undefined = false;
-
-  option5: boolean | undefined = false;
-
-  option6: boolean | undefined = false;
-
-  option7: boolean | undefined = false;
-
-  option8: boolean | undefined = false;
-
-  option9: boolean | undefined = false;
-
-  option10: boolean | undefined = false;
-
-
 }
